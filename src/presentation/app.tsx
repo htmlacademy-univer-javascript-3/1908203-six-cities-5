@@ -13,7 +13,7 @@ export function App() {
       <Routes>
         <Route path={AppRoutes.login} element={<LoginPage />} />
         <Route path={AppRoutes.main} element={<MainPage />} />
-        <Route path={AppRoutes.order} element={<OfferPage />} />
+        <Route path={AppRoutes.offer} element={<OfferPage />} />
         <Route path={AppRoutes.favorites}
           element={
             <PrivateRoute isAuthenticated={false}>
