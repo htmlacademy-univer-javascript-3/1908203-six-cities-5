@@ -6,18 +6,23 @@ import { NotFoundPage } from './screens/not-found/not-found';
 import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
+import { Offer } from '../domain/models/offer';
 
-export function App() {
+type AppProps = {
+  offers: Offer[];
+}
+
+export function App({ offers }: AppProps) {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.login} element={<LoginPage />} />
-        <Route path={AppRoutes.main} element={<MainPage />} />
+        <Route path={AppRoutes.main} element={<MainPage offers={offers} />} />
         <Route path={AppRoutes.offer} element={<OfferPage />} />
         <Route path={AppRoutes.favorites}
           element={
             <PrivateRoute isAuthenticated={false}>
-              <FavoritesPage />
+              <FavoritesPage offers={offers} />
             </PrivateRoute>
           }
         />

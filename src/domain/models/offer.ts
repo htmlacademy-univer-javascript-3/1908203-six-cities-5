@@ -1,11 +1,16 @@
+import { City } from './city';
+import { Location } from './location';
 import { OfferType } from './offer-type';
 
 export type Offer = {
+  id: string;
   title: string;
-  price: number;
-  stars: number;
   type: OfferType;
-  bookmarked: boolean;
-  premium: boolean;
-  imageLink: string;
+  price: number;
+  city: City;
+  location: Location;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
 }
