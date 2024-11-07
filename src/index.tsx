@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { App } from './presentation/app';
 import { offers } from './mocks/offers';
 import React from 'react';
-// import 'leaflet.css';
+import 'leaflet/dist/leaflet.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

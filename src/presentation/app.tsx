@@ -8,8 +8,6 @@ import { AppRoutes } from '../routing/app-routes';
 import { Offer } from '../domain/models/offer';
 import { MainScreen } from './screens/main/main-page';
 
-import 'leaflet/dist/leaflet.css';
-
 type AppProps = {
   offers: Offer[];
 }
