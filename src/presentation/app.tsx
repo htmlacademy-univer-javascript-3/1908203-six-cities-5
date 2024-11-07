@@ -1,12 +1,14 @@
 import { FavoritesPage } from './screens/favorites/favorites-page';
 import { LoginPage } from './screens/login/login-page';
-import { MainPage } from './screens/main/main-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from './screens/not-found/not-found';
 import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
 import { Offer } from '../domain/models/offer';
+import { MainScreen } from './screens/main/main-page';
+
+import 'leaflet/dist/leaflet.css';
 
 type AppProps = {
   offers: Offer[];
@@ -17,7 +19,7 @@ export function App({ offers }: AppProps) {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.login} element={<LoginPage />} />
-        <Route path={AppRoutes.main} element={<MainPage offers={offers} />} />
+        <Route path={AppRoutes.main} element={<MainScreen offers={offers} />} />
         <Route path={AppRoutes.offer} element={<OfferPage />} />
         <Route path={AppRoutes.favorites}
           element={
