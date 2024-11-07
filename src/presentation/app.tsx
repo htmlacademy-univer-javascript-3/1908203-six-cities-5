@@ -1,12 +1,12 @@
 import { FavoritesPage } from './screens/favorites/favorites-page';
 import { LoginPage } from './screens/login/login-page';
+import { MainPage } from './screens/main/main-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { NotFoundPage } from './screens/not-found/not-found';
 import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
 import { Offer } from '../domain/models/offer';
-import { MainPage } from './screens/main/main-page';
 
 type AppProps = {
   offers: Offer[];
