@@ -1,11 +1,25 @@
+import { useState } from 'react';
 import { Offer } from '../../../domain/models/offer';
 import { OfferList } from '../../components/offer-list';
+import { Map } from './components/map';
 
-export type MainPageProps = {
+type MainPageProps = {
   offers: Offer[];
-}
+};
 
 export function MainPage({ offers }: MainPageProps) {
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+
+  function onMouseEnter(id: string) {
+    setActiveOfferId(id);
+  }
+
+  function onMouseLeave(id: string) {
+    if (activeOfferId === id) {
+      setActiveOfferId(null);
+    }
+  }
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -36,7 +50,6 @@ export function MainPage({ offers }: MainPageProps) {
           </div>
         </div>
       </header>
-
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -75,7 +88,6 @@ export function MainPage({ offers }: MainPageProps) {
             </ul>
           </section>
         </div>
-
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
@@ -96,18 +108,24 @@ export function MainPage({ offers }: MainPageProps) {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <OfferList offers={offers} />
-              </div >
+              <OfferList
+                offers={offers}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+              />
             </section>
+
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map
+                city={offers[0].city}
+                offers={offers}
+                activeOfferId={activeOfferId}
+                className="cities__map map"
+              />
             </div>
           </div>
         </div>
-
-
       </main>
-    </div >
+    </div>
   );
 }

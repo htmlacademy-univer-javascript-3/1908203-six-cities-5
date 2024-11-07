@@ -1,37 +1,25 @@
-import { useState } from 'react';
 import { Offer } from '../../domain/models/offer';
 import { OfferItem } from './offer-item';
 
 export type OfferListProps = {
   offers: Offer[];
+  onMouseEnter: (id: string) => void;
+  onMouseLeave: (id: string) => void;
 }
 
-export function OfferList({ offers }: OfferListProps) {
-  const [activeOfferId, setActiveOfferId] = useState('');
-
-  function onMouseEnter(id: string) {
-    setActiveOfferId(id);
-  }
-
-  function onMouseLeave(id: string) {
-    if (activeOfferId === id){
-      setActiveOfferId('');
-    }
-  }
-
+export function OfferList({ offers, onMouseEnter, onMouseLeave }: OfferListProps) {
   return (
-    <div>
+    <div className="cities__places-list places__list tabs__content">
       {
-        offers.map((offer) =>
-          (
+        offers
+          .map((offer) => (
             <OfferItem
-              key={offer.title}
+              key={offer.id}
               offer={offer}
-              onMouseLeave={onMouseLeave}
               onMouseEnter={onMouseEnter}
-            />
+              onMouseLeave={onMouseLeave}
+            />)
           )
-        )
       }
     </div>
   );
