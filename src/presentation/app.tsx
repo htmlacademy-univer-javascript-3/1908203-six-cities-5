@@ -6,7 +6,7 @@ import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
 import { Offer } from '../domain/models/offer';
-import { MainScreen } from './screens/main/main-page';
+import { MainPage } from './screens/main/main-page';
 
 type AppProps = {
   offers: Offer[];
@@ -17,7 +17,7 @@ export function App({ offers }: AppProps) {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoutes.login} element={<LoginPage />} />
-        <Route path={AppRoutes.main} element={<MainScreen offers={offers} />} />
+        <Route path={AppRoutes.main} element={<MainPage offers={offers} />} />
         <Route path={AppRoutes.offer} element={<OfferPage />} />
         <Route path={AppRoutes.favorites}
           element={

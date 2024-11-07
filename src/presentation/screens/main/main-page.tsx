@@ -3,11 +3,11 @@ import { Offer } from '../../../domain/models/offer';
 import { OfferList } from '../../components/offer-list';
 import { Map } from './components/map';
 
-type MainScreenProps = {
+type MainPageProps = {
   offers: Offer[];
 };
 
-export function MainScreen({ offers }: MainScreenProps) {
+export function MainPage({ offers }: MainPageProps) {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   function onMouseEnter(id: string) {
