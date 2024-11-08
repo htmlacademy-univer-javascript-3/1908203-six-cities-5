@@ -50,7 +50,11 @@ export function FavoritesPage({ offers }: FavoritesPageProps) {
                     </a>
                   </div>
                 </div>
-                <OfferList offers={offers}/>
+                <OfferList
+                  offers={offers}
+                  onMouseEnter={() => { }}
+                  onMouseLeave={() => { }}
+                />
               </li>
 
               <li className="favorites__locations-items">
