@@ -4,8 +4,8 @@ import { OfferItem } from './offer-item';
 export type OfferListProps = {
   offers: Offer[];
   className: string;
-  onMouseEnter: (id: string) => void;
-  onMouseLeave: (id: string) => void;
+  onMouseEnter?: (id: string) => void;
+  onMouseLeave?: (id: string) => void;
 }
 
 export function OfferList({ offers, className, onMouseEnter, onMouseLeave }: OfferListProps) {
@@ -17,8 +17,8 @@ export function OfferList({ offers, className, onMouseEnter, onMouseLeave }: Off
             <OfferItem
               key={offer.id}
               offer={offer}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
+              onMouseEnter={(id) => onMouseEnter?.(id)}
+              onMouseLeave={(id) => onMouseLeave?.(id)}
             />)
           )
       }

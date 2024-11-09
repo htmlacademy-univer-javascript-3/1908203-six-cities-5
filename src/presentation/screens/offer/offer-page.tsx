@@ -6,23 +6,10 @@ import { OfferList } from '../../components/offer-list';
 import { ReviewList } from './components/review-list';
 import { reviews } from '../../../mocks/reviews';
 import { GoodsList } from './components/goods-list';
-import { useState } from 'react';
 import { AppNavBar } from '../../components/app-navbar';
 
 export function OfferPage() {
   const { id } = useParams();
-
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
-
-  function onMouseEnter(offerId: string) {
-    setActiveOfferId(offerId);
-  }
-
-  function onMouseLeave(offerId: string) {
-    if (activeOfferId === offerId) {
-      setActiveOfferId(null);
-    }
-  }
 
   const offer = offers.find((item) => item.id === id);
 
@@ -130,7 +117,7 @@ export function OfferPage() {
             <Map
               city={offers[0].city}
               offers={offers}
-              activeOfferId={activeOfferId}
+              activeOfferId={offer.id}
               className={'offer__map map'}
             />
 
@@ -142,8 +129,6 @@ export function OfferPage() {
             <OfferList
               offers={offers}
               className={'near-places__list places__list'}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
             />
           </section>
         </div>
