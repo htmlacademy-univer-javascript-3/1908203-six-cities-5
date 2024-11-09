@@ -3,21 +3,22 @@ import { OfferItem } from './offer-item';
 
 export type OfferListProps = {
   offers: Offer[];
-  onMouseEnter: (id: string) => void;
-  onMouseLeave: (id: string) => void;
+  className: string;
+  onMouseEnter?: (id: string) => void;
+  onMouseLeave?: (id: string) => void;
 }
 
-export function OfferList({ offers, onMouseEnter, onMouseLeave }: OfferListProps) {
+export function OfferList({ offers, className, onMouseEnter, onMouseLeave }: OfferListProps) {
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={className}>
       {
         offers
           .map((offer) => (
             <OfferItem
               key={offer.id}
               offer={offer}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
+              onMouseEnter={(id) => onMouseEnter?.(id)}
+              onMouseLeave={(id) => onMouseLeave?.(id)}
             />)
           )
       }
