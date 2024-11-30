@@ -7,6 +7,8 @@ import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
 import { Offer } from '../domain/models/offer';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 type AppProps = {
   offers: Offer[];
@@ -14,20 +16,22 @@ type AppProps = {
 
 export function App({ offers }: AppProps) {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={AppRoutes.login} element={<LoginPage />} />
-        <Route path={AppRoutes.main} element={<MainPage offers={offers} />} />
-        <Route path={AppRoutes.offer} element={<OfferPage />} />
-        <Route path={AppRoutes.favorites}
-          element={
-            <PrivateRoute isAuthenticated={false}>
-              <FavoritesPage offers={offers} />
-            </PrivateRoute>
-          }
-        />
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path={AppRoutes.login} element={<LoginPage />} />
+          <Route path={AppRoutes.main} element={<MainPage />} />
+          <Route path={AppRoutes.offer} element={<OfferPage />} />
+          <Route path={AppRoutes.favorites}
+            element={
+              <PrivateRoute isAuthenticated={false}>
+                <FavoritesPage offers={offers} />
+              </PrivateRoute>
+            }
+          />
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
