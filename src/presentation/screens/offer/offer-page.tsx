@@ -1,51 +1,50 @@
 import { useParams } from 'react-router-dom';
-import { offers } from '../../../mocks/offers';
 import { NotFoundPage } from '../not-found/not-found';
 import { Map } from '../main/components/map';
 import { OfferList } from '../../components/offer-list';
 import { ReviewList } from './components/review-list';
-import { reviews } from '../../../mocks/reviews';
+
 import { GoodsList } from './components/goods-list';
 import { AppNavBar } from '../../components/app-navbar';
+import { Offer } from '../../../domain/models/offer';
+import { Review } from '../../../domain/models/review';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { AppState } from '../../store/reducer';
+import { useEffect } from 'react';
+import { fetchOfferDetailsAction } from '../../store/api-actions';
+import { LoadingScreen } from '../main/components/loading-screen';
+import { OfferGallery } from './components/offer-gallery';
 
 export function OfferPage() {
   const { id } = useParams();
 
-  const offer = offers.find((item) => item.id === id);
+  const reviews = useSelector<AppState, Review[]>((state) => state.selectedOffer?.reviews ?? []);
+  const offersNearby = useSelector<AppState, Offer[]>((state) => state.selectedOffer?.offersNearby ?? []);
+  const offer = useSelector<AppState, Offer | undefined>((state) => state?.selectedOffer?.offer);
+  const isOfferLoading = useSelector<AppState, boolean>((state) => state?.isSelectedOfferLoading);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (id !== undefined) {
+      dispatch(fetchOfferDetailsAction(id));
+    }
+  }, [dispatch, id]);
+
+  if (isOfferLoading) {
+    return <LoadingScreen />;
+  }
 
   if (offer === undefined) {
     return <NotFoundPage />;
   }
-
-  const bookmarkedClassName = offer.isFavorite && 'offer__bookmark-button--active';
 
   return (
     <div className="page">
       <AppNavBar isActive />
       <main className="page__main page__main--offer">
         <section className="offer">
-          <div className="offer__gallery-container container">
-            <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/room.jpg" alt="Photo studio" />
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-02.jpg" alt="Photo studio" />
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-03.jpg" alt="Photo studio" />
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/studio-01.jpg" alt="Photo studio" />
-              </div>
-              <div className="offer__image-wrapper">
-                <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio" />
-              </div>
-            </div>
-          </div>
+          <OfferGallery images={offer.images} />
           <div className="offer__container container">
             <div className="offer__wrapper">
               {offer.isPremium &&
@@ -56,7 +55,7 @@ export function OfferPage() {
                 <h1 className="offer__name">
                   {offer.title}
                 </h1>
-                <button className={`offer__bookmark-button ${bookmarkedClassName} button`} type="button">
+                <button className={`offer__bookmark-button ${offer.isFavorite && 'offer__bookmark-button--active'} button`} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -102,10 +101,7 @@ export function OfferPage() {
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                    {offer.description}
                   </p>
                 </div>
               </div>
@@ -115,8 +111,8 @@ export function OfferPage() {
           <section className="offer__map map">
 
             <Map
-              city={offers[0].city}
-              offers={offers}
+              city={offersNearby[0].city}
+              offers={offersNearby}
               activeOfferId={offer.id}
               className={'offer__map map'}
             />
@@ -127,7 +123,7 @@ export function OfferPage() {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <OfferList
-              offers={offers}
+              offers={offersNearby}
               className={'near-places__list places__list'}
             />
           </section>
