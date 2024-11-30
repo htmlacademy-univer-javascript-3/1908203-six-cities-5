@@ -4,10 +4,12 @@ import { OfferList } from '../../components/offer-list';
 import { Map } from './components/map';
 import { AppNavBar } from '../../components/app-navbar';
 import { CityHeader } from './components/city-header';
-import { chooseCity } from '../../store/action';
+import { chooseCity, chooseSorting } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { AppState } from '../../store/reducer';
+import { SortOptions } from './components/sort-options';
+import { SortType } from '../../../domain/models/sort-type';
 
 export function MainPage() {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
@@ -23,14 +25,33 @@ export function MainPage() {
   }
 
   const choosenCity = useSelector<AppState, string>((state) => state.city);
+  const choosenSortType = useSelector<AppState, SortType>((state) => state.sortType);
   const offers = useSelector<AppState, Offer[]>((state) => state.offers);
 
-  const choosenOffers = offers.filter((offer) => offer.city.name === choosenCity);
+  const choosenOffers = offers
+    .filter((offer) => offer.city.name === choosenCity)
+    .sort(
+      (left, right) => {
+        if (choosenSortType === SortType.PriceHighToLow) {
+          return right.price - left.price;
+        } else if (choosenSortType === SortType.PriceLowToHigh){
+          return left.price - right.price;
+        } else if (choosenSortType === SortType.TopRatedFirst) {
+          return right.rating - left.rating;
+        }
+
+        return 0;
+      }
+    );
 
   const dispatch = useDispatch<AppDispatch>();
 
   const handleCityChoose = (city: string) => {
     dispatch(chooseCity(city));
+  };
+
+  const handleSortingChoose = (sortType: SortType) => {
+    dispatch(chooseSorting(sortType));
   };
 
   return (
@@ -46,21 +67,10 @@ export function MainPage() {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{choosenOffers.length} places to stay in {choosenCity}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <SortOptions
+                sortType={choosenSortType}
+                handleSortingChoose={handleSortingChoose}
+              />
               <OfferList
                 offers={choosenOffers}
                 className={'cities__places-list places__list tabs__content'}
