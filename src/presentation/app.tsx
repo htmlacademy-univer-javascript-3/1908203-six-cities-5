@@ -6,17 +6,12 @@ import { NotFoundPage } from './screens/not-found/not-found';
 import { OfferPage } from './screens/offer/offer-page';
 import { PrivateRoute } from '../routing/private-route';
 import { AppRoutes } from '../routing/app-routes';
-import { Offer } from '../domain/models/offer';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { appStateStore } from './store';
 
-type AppProps = {
-  offers: Offer[];
-}
-
-export function App({ offers }: AppProps) {
+export function App() {
   return (
-    <Provider store={store}>
+    <Provider store={appStateStore}>
       <BrowserRouter>
         <Routes>
           <Route path={AppRoutes.login} element={<LoginPage />} />
@@ -25,7 +20,7 @@ export function App({ offers }: AppProps) {
           <Route path={AppRoutes.favorites}
             element={
               <PrivateRoute isAuthenticated={false}>
-                <FavoritesPage offers={offers} />
+                <FavoritesPage offers={[]} />
               </PrivateRoute>
             }
           />

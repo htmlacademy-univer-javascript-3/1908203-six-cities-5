@@ -11,6 +11,8 @@ export function ReviewItem({ review }: ReviewItemProps) {
     month: 'long',
   };
 
+  const dateString = Date.parse(review.timestamp).toLocaleString('en', options);
+
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -28,8 +30,8 @@ export function ReviewItem({ review }: ReviewItemProps) {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <p className="reviews__text">{review.content}</p>
-        <time className="reviews__time" dateTime="2019-04-24">{review.timestamp.toLocaleDateString('en', options)}</time>
+        <p className="reviews__text">{review.comment}</p>
+        <time className="reviews__time" dateTime="2019-04-24">{dateString}</time>
       </div>
     </li>
   );

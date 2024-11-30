@@ -1,19 +1,10 @@
 export type CityHeaderProps = {
   city: string;
+  cities: string[];
   onCityClicked: (city: string) => void;
 }
 
-export function CityHeader({ city, onCityClicked }: CityHeaderProps) {
-
-  const cities = [
-    'Paris',
-    'Cologne',
-    'Brussels',
-    'Amsterdam',
-    'Hamburg',
-    'Dusseldorf'
-  ];
-
+export function CityHeader({ city, cities, onCityClicked }: CityHeaderProps) {
   return (
     <div className="tabs">
       <section className="locations container">
