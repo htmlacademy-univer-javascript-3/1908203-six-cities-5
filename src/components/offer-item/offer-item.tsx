@@ -1,18 +1,22 @@
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { FavoriteAction } from '../../types/favorite-action';
 
 
 export type OfferItemProps = {
   offer: Offer;
+  onFavoriteStatusChanged: (action: FavoriteAction) => void;
   onMouseEnter: (id: string) => void;
   onMouseLeave: (id: string) => void;
 }
 
-export function OfferItem({ offer, onMouseEnter, onMouseLeave }: OfferItemProps) {
+export function OfferItem({ offer, onFavoriteStatusChanged, onMouseEnter, onMouseLeave }: OfferItemProps) {
   const bookmarkedClassName = offer.isFavorite && 'place-card__bookmark-button--active';
 
   const link = AppRoute.Offer.replace(':id', offer.id);
+
+  const offerTypeString = offer.type.charAt(0).toUpperCase() + offer.type.slice(1);
 
   return (
     <article
@@ -39,6 +43,7 @@ export function OfferItem({ offer, onMouseEnter, onMouseLeave }: OfferItemProps)
           </div>
           <button
             className={`place-card__bookmark-button ${bookmarkedClassName} button`}
+            onClick={() => onFavoriteStatusChanged({offerId: offer.id, status: !offer.isFavorite})}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
@@ -56,7 +61,7 @@ export function OfferItem({ offer, onMouseEnter, onMouseLeave }: OfferItemProps)
         <h2 className="place-card__name">
           <Link to={link}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{offerTypeString}</p>
       </div>
     </article>
   );

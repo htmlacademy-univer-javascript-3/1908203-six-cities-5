@@ -5,4 +5,5 @@ export type OfferDetails = {
   offer: Offer;
   reviews: Review[];
   offersNearby: Offer[];
+  isReviewFormSending: boolean;
 }

@@ -1,25 +1,49 @@
-import {ChangeEvent, useState} from 'react';
+import { ChangeEvent, SyntheticEvent } from 'react';
+import { ReviewAction } from '../../../types/review-action';
+import { MinRating, ReviewCommentMaxLength, ReviewCommentMinLength } from '../../../const';
 
-export function CommentForm() {
-  const [, setRating] = useState('1');
-  const [comment, setComment] = useState('');
+export type ReviewFormProps = {
+  offerId: string;
+  comment: string;
+  rating: number;
+  isDisabled: boolean;
+  onCommentChanged: (value: string) => void;
+  onRatingChanged: (value: number) => void;
+  onFormSubmit: (action: ReviewAction) => void;
+}
 
-  function onCommentChanged(event: ChangeEvent<HTMLTextAreaElement>) {
-    setComment(event.target.value);
-  }
+export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChanged, onRatingChanged, onFormSubmit }: ReviewFormProps) {
+  const isNotFilled = comment.length < ReviewCommentMinLength || rating < MinRating;
 
-  function onRatingChanged(event: ChangeEvent<HTMLInputElement>) {
-    setRating(event.target.value);
-  }
+  const handleCommentChanged = ({ target: { value } }: ChangeEvent<HTMLTextAreaElement>) => {
+    onCommentChanged(value);
+  };
+
+  const handleRatingChanged = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+    onRatingChanged(+value);
+  };
+
+  const handleFormSubmit = (event: SyntheticEvent) => {
+    event.preventDefault();
+
+    onFormSubmit({
+      offerId: offerId,
+      comment: comment,
+      rating: rating,
+    });
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      onSubmit={handleFormSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
       <div
         className="reviews__rating-form form__rating"
-        onChange={onRatingChanged}
+        onChange={handleRatingChanged}
       >
         <input
           className="form__rating-input visually-hidden"
@@ -34,7 +58,7 @@ export function CommentForm() {
           title="perfect"
         >
           <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star"/>
+            <use xlinkHref="#icon-star" />
           </svg>
         </label>
         <input
@@ -50,7 +74,7 @@ export function CommentForm() {
           title="good"
         >
           <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star"/>
+            <use xlinkHref="#icon-star" />
           </svg>
         </label>
         <input
@@ -66,7 +90,7 @@ export function CommentForm() {
           title="not bad"
         >
           <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star"/>
+            <use xlinkHref="#icon-star" />
           </svg>
         </label>
         <input
@@ -82,7 +106,7 @@ export function CommentForm() {
           title="badly"
         >
           <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star"/>
+            <use xlinkHref="#icon-star" />
           </svg>
         </label>
         <input
@@ -98,16 +122,18 @@ export function CommentForm() {
           title="terribly"
         >
           <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star"/>
+            <use xlinkHref="#icon-star" />
           </svg>
         </label>
       </div>
       <textarea
+        maxLength={ReviewCommentMaxLength}
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={onCommentChanged}
+        onChange={handleCommentChanged}
+        disabled={isDisabled}
         value={comment}
       />
       <div className="reviews__button-wrapper">
@@ -120,7 +146,7 @@ export function CommentForm() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={isNotFilled || isDisabled}
         >
           Submit
         </button>

@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../../types/offer';
 import { AppRoute } from '../../../const';
+import { FavoriteAction } from '../../../types/favorite-action';
 
 export type FavoriteCardProps = {
   offer: Offer;
+  onFavoriteStatusChanged: (action: FavoriteAction) => void;
 }
 
-export function FavoriteCard({ offer }: FavoriteCardProps) {
+export function FavoriteCard({ offer, onFavoriteStatusChanged }: FavoriteCardProps) {
   const bookmarkedClassName = offer.isFavorite && 'place-card__bookmark-button--active';
 
   const link = AppRoute.Offer.replace(':id', offer.id);
@@ -26,6 +28,7 @@ export function FavoriteCard({ offer }: FavoriteCardProps) {
           </div>
           <button
             className={`place-card__bookmark-button ${bookmarkedClassName} button`}
+            onClick={() => onFavoriteStatusChanged({offerId: offer.id, status: !offer.isFavorite})}
             type="button"
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
