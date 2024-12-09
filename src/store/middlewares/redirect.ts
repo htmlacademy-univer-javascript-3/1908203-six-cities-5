@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Middleware } from 'redux';
 import { reducer } from '../reducer';
-import browserHistory from '../../browser-history';
+import { browserHistory } from '../../browser-history';
 import { redirectToRoute } from '../action';
 
 type Reducer = ReturnType<typeof reducer>;

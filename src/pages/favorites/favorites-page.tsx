@@ -1,33 +1,32 @@
-import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { FavoriteList } from './components/favorite-list';
-import { AppRoute } from '../../const';
-import { AppState } from '../../store/reducer';
-import { useSelector } from 'react-redux';
+import { EmptyOffers } from './components/empty-offers';
+import { LoadingScreen } from '../main/components/loading-screen';
+import { FavoritePageContent } from './components/favorite-page-content';
+import { FavoriteAction } from '../../types/favorite-action';
 
-export function FavoritesPage() {
-  const offers = useSelector<AppState, Offer[]>((state) => state.offers);
+export type FavoritesPageProps = {
+  offers: Offer[] | undefined;
+  onFavoriteStatusChanged: (action: FavoriteAction) => void;
+};
+
+export function FavoritesPage({ offers, onFavoriteStatusChanged }: FavoritesPageProps) {
+  if (offers === undefined) {
+    return (<LoadingScreen />);
+  }
 
   return (
     <main className="page__main page__main--favorites">
       <div className="page__favorites-container container">
-        <section className="favorites">
-          <h1 className="favorites__title">Saved listing</h1>
-          <ul className="favorites__list">
-            <li className="favorites__locations-items">
-              <div className="favorites__locations locations locations--current">
-                <div className="locations__item">
-                  <Link to={AppRoute.Main} className="locations__item-link">
-                    <span>Amsterdam</span>
-                  </Link>
-                </div>
-              </div>
-              <FavoriteList
-                offers={offers.filter((offer) => offer.isFavorite)}
-              />
-            </li>
-          </ul>
-        </section>
+        {
+
+          offers.length <= 0
+            ? <EmptyOffers />
+            :
+            <FavoritePageContent
+              offers={offers}
+              onFavoriteStatusChanged={onFavoriteStatusChanged}
+            />
+        }
       </div>
     </main>
   );

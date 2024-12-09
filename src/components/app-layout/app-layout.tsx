@@ -1,20 +1,20 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppNavBar } from '../app-navbar/app-navbar';
-import { UserData } from '../../types/user-data';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
 import { AppRoute } from '../../const';
 
+export type AppLayoutProps = {
+  email?: string;
+  favoriteCount?: number;
+  onSignOutClick: () => void;
+}
 
-export function AppLayout() {
+export function AppLayout({ email, favoriteCount, onSignOutClick }: AppLayoutProps) {
   const location = useLocation();
   const path = location.pathname;
 
   const isActive = path !== AppRoute.Main.toString();
   const isFavoritePage = path === AppRoute.Favorites.toString();
   const isNotLoginPage = path !== AppRoute.Login.toString();
-
-  const userData = useSelector<AppState, UserData | undefined>((state) => state.userData);
 
   const pageClassLambda = (route: string) => {
     if (route === AppRoute.Main.toString()) {
@@ -32,12 +32,10 @@ export function AppLayout() {
     <div className={pageClass}>
       <AppNavBar
         isActive={isActive}
-        email={userData?.email}
-        favoriteCount={100}
+        email={email}
+        favoriteCount={favoriteCount}
         showOptions={isNotLoginPage}
-        onSignOutClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onSignOutClick={onSignOutClick}
       />
       <Outlet />
       {

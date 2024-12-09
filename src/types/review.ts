@@ -4,6 +4,6 @@ export type Review = {
   id: string;
   comment: string;
   user: User;
-  timestamp: string;
+  date: string;
   rating: number;
 }

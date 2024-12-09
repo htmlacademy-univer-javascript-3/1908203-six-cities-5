@@ -3,7 +3,10 @@ export enum APIRoute {
   OfferDetails = '/offers/:id',
   OfferReviews = '/comments/:id',
   OffersNearby = '/offers/:id/nearby',
-  Login = '/login'
+  Favorite = '/favorite',
+  ChangeFavoriteStatus = '/favorite/:id/:status',
+  Login = '/login',
+  Logout = '/logout'
 }
 
 export enum AppRoute {
@@ -18,3 +21,7 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const ReviewCommentMaxLength = 300;
+export const ReviewCommentMinLength = 50;
+export const MinRating = 1;

@@ -1,5 +1,4 @@
 import { Review } from '../../../types/review';
-import { CommentForm } from './comment-form';
 import { ReviewItem } from './review-item';
 
 export type ReviewListProps = {
@@ -8,21 +7,18 @@ export type ReviewListProps = {
 
 export function ReviewList({ reviews }: ReviewListProps) {
   return (
-    <section className="offer__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-      <ul className="reviews__list">
-        {
-          reviews
-            .map((review) => (
-              <ReviewItem
-                key={review.id}
-                review={review}
-              />)
-            )
-        }
-      </ul>
-      <CommentForm />
-    </section>
+    <ul className="reviews__list">
+      {
+        reviews
+          .slice(0, 10)
+          .map((review) => (
+            <ReviewItem
+              key={review.id}
+              review={review}
+            />)
+          )
+      }
+    </ul>
   );
 }
 

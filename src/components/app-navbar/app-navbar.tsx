@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { SyntheticEvent } from 'react';
 
 export type AppNavBarProps = {
   isActive: boolean;
@@ -10,6 +11,12 @@ export type AppNavBarProps = {
 }
 
 export function AppNavBar({ isActive, showOptions, email, favoriteCount, onSignOutClick }: AppNavBarProps) {
+
+  const handleSignOutClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    onSignOutClick();
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -52,7 +59,7 @@ export function AppNavBar({ isActive, showOptions, email, favoriteCount, onSignO
                     <Link
                       to={AppRoute.Main}
                       className="header__nav-link"
-                      onClick={onSignOutClick}
+                      onClick={handleSignOutClick}
                     >
                       <span className="header__signout">Sign out</span>
                     </Link>
