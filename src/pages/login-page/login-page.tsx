@@ -1,14 +1,16 @@
 import { LoginForm } from '../../components/login/login-form';
 import { toast } from 'react-toastify';
 import { AuthData } from '../../types/auth-data';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 export type LoginPageProps = {
   cities: string[];
-  onNavigateToCity: (city: string) => void;
+  onSelectCity: (city: string) => void;
   onLoginClick: (data: AuthData) => void;
 }
 
-export function LoginPage({ cities, onNavigateToCity, onLoginClick }: LoginPageProps) {
+export function LoginPage({ cities, onSelectCity: onNavigateToCity, onLoginClick }: LoginPageProps) {
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
 
   const handleNavigateToCity = () => onNavigateToCity(randomCity);
@@ -29,9 +31,13 @@ export function LoginPage({ cities, onNavigateToCity, onLoginClick }: LoginPageP
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a onClick={handleNavigateToCity} className="locations__item-link">
+            <Link
+              to={AppRoute.Main}
+              onClick={handleNavigateToCity}
+              className="locations__item-link"
+            >
               <span>{randomCity}</span>
-            </a>
+            </Link>
           </div>
         </section>
       </div>
