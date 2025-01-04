@@ -17,6 +17,7 @@ const initialState: MainState = {
   selectedCity: 'Paris',
   selectedSortType: SortType.Popular,
   isOffersLoading: false,
+  error: undefined,
 };
 
 export const mainProcess = createSlice({
@@ -32,20 +33,28 @@ export const mainProcess = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(changeFavoriteStatusAction.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(fetchOffersAction.pending, (state) => {
+        state.isOffersLoading = true;
+        state.error = undefined;
+      })
       .addCase(changeFavoriteStatusAction.fulfilled, (state, { payload }) => {
         state.offers = state.offers.map((offer) =>
           offer.id === payload.id ? payload : offer,
         );
       })
-      .addCase(fetchOffersAction.pending, (state) => {
-        state.isOffersLoading = true;
-      })
       .addCase(fetchOffersAction.fulfilled, (state, { payload }) => {
         state.isOffersLoading = false;
         state.offers = payload;
       })
-      .addCase(fetchOffersAction.rejected, (state) => {
+      .addCase(fetchOffersAction.rejected, (state, { error }) => {
         state.isOffersLoading = false;
+        state.error = error.message;
+      })
+      .addCase(changeFavoriteStatusAction.rejected, (state, {error}) => {
+        state.error = error.message;
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.offers.forEach((offer) => {

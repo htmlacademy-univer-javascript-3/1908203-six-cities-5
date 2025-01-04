@@ -9,6 +9,7 @@ const initialState: OfferState = {
   isReviewFormSending: false,
   comment: '',
   rating: 0,
+  error: undefined,
 };
 
 export const offerProcess = createSlice({
@@ -36,14 +37,16 @@ export const offerProcess = createSlice({
         }
       })
       .addCase(fetchOfferDetailsAction.pending, (state) => {
+        state.error = undefined;
         state.isSelectedOfferLoading = true;
       })
       .addCase(fetchOfferDetailsAction.fulfilled, (state, { payload }) => {
         state.isSelectedOfferLoading = false;
         state.selectedOffer = payload;
       })
-      .addCase(fetchOfferDetailsAction.rejected, (state) => {
+      .addCase(fetchOfferDetailsAction.rejected, (state, { error }) => {
         state.isSelectedOfferLoading = false;
+        state.error = error.message;
       })
       .addCase(addReviewAction.fulfilled, (state, { payload }) => {
         state.isReviewFormSending = false;
@@ -54,7 +57,12 @@ export const offerProcess = createSlice({
         }
       })
       .addCase(addReviewAction.pending, (state) => {
+        state.error = undefined;
         state.isReviewFormSending = true;
+      })
+      .addCase(addReviewAction.rejected, (state, { error }) => {
+        state.isReviewFormSending = false;
+        state.error = error.message;
       })
       .addCase(logoutAction.fulfilled, (state) => {
         if (state.selectedOffer !== undefined) {

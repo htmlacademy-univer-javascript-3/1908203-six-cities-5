@@ -49,10 +49,12 @@ export function OfferPage({ canWriteComments, onFavoriteStatusChanged }: OfferPa
 
   const offerTypeString = offer.type.charAt(0).toUpperCase() + offer.type.slice(1);
 
-  const selectedOffersNearby = offersNearby.slice(0, 3);
-  const mapOffers = [...offersNearby.slice(0, 3), offer];
+  const maxNearbyOffersCount = 3;
+  const selectedOffersNearby = offersNearby.slice(0, maxNearbyOffersCount);
+  const mapOffers = [...offersNearby.slice(0, maxNearbyOffersCount), offer];
 
-  const selectedReviews = reviews.slice(0, 10);
+  const maxReviewsCount = 10;
+  const selectedReviews = reviews.slice(0, maxReviewsCount);
 
   const handleCommentFormSubmit = (action: ReviewAction) => {
     dispatch(addReviewAction(action));

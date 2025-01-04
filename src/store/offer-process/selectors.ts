@@ -5,6 +5,7 @@ import { State } from '../../types/state';
 
 export const getComment = (state: State): string => state[NameSpace.Offer].comment;
 export const getRating = (state: State): number => state[NameSpace.Offer].rating;
+export const getOfferError = (state: State): string | undefined => state[NameSpace.Offer].error;
 
 export const getIsSelectedOfferLoading = (state: State): boolean => state[NameSpace.Offer].isSelectedOfferLoading;
 

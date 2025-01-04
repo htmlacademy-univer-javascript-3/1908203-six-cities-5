@@ -8,4 +8,5 @@ export const getSelectedSortType = (state: State): SortType => state[NameSpace.M
 export const getCities = (state: State): string[] => state[NameSpace.Main].cities;
 export const getOffers = (state: State): Offer[] => state[NameSpace.Main].offers;
 export const getIsOffersLoading = (state: State): boolean => state[NameSpace.Main].isOffersLoading;
+export const getError = (state: State): string | undefined => state[NameSpace.Main].error;
 
