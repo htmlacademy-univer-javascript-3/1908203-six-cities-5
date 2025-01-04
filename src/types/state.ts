@@ -11,6 +11,7 @@ export type OfferState = {
   isReviewFormSending: boolean;
   comment: string;
   rating: number;
+  error?: string;
 }
 
 export type MainState = {
@@ -19,12 +20,14 @@ export type MainState = {
   selectedCity: string;
   selectedSortType: SortType;
   isOffersLoading: boolean;
+  error?: string;
 }
 
 export type UserState = {
   authorizationStatus: AuthorizationStatus;
   userData?: UserData;
   favoriteOffers?: Offer[];
+  error?: string;
 }
 
 export type State = ReturnType<typeof appStateStore.getState>;

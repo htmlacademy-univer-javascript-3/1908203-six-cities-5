@@ -1,18 +1,19 @@
 import { LoginForm } from '../../components/login/login-form';
-import { AuthData } from '../../types/auth-data';
-import { loginAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
 import { toast } from 'react-toastify';
+import { AuthData } from '../../types/auth-data';
 
-export function LoginPage() {
+export type LoginPageProps = {
+  cities: string[];
+  onNavigateToCity: (city: string) => void;
+  onLoginClick: (data: AuthData) => void;
+}
 
-  const dispatch = useAppDispatch();
+export function LoginPage({ cities, onNavigateToCity, onLoginClick }: LoginPageProps) {
+  const randomCity = cities[Math.floor(Math.random() * cities.length)];
 
-  const handleLogin = (data: AuthData) => {
-    dispatch(loginAction(data));
-  };
+  const handleNavigateToCity = () => onNavigateToCity(randomCity);
 
-  const handleRequiredEmail = () => toast.warn('The email must be filled.');
+  const handleLoginRequired = () => toast.warn('The email must be filled.');
   const handleInvalidPassword = () => toast.warn('The password must contain at least one letter and one digit.');
 
   return (
@@ -21,15 +22,15 @@ export function LoginPage() {
         <section className="login">
           <h1 className="login__title">Sign in</h1>
           <LoginForm
-            onFormSubmit={handleLogin}
+            onFormSubmit={onLoginClick}
             onInvalidPassword={handleInvalidPassword}
-            onEmailRequired={handleRequiredEmail}
+            onLoginRequired={handleLoginRequired}
           />
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
+            <a onClick={handleNavigateToCity} className="locations__item-link">
+              <span>{randomCity}</span>
             </a>
           </div>
         </section>

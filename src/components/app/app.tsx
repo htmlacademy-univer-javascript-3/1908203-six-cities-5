@@ -9,14 +9,18 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { LoadingScreen } from '../loading/loading-screen';
 import { AppLayout } from './app-layout';
 import { Route, Routes } from 'react-router-dom';
-import { changeFavoriteStatusAction, logoutAction } from '../../store/api-actions';
+import { changeFavoriteStatusAction, loginAction, logoutAction } from '../../store/api-actions';
 import { FavoriteAction } from '../../types/favorite-action';
 import { GuestRoute } from '../guest-route/guest-route';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getIsOffersLoading, getOffers } from '../../store/main-process/selectors';
-import { getAuthorizationStatus, getFavorites, getUserData } from '../../store/user-process/selectors';
-import { useCallback } from 'react';
+import { getCities, getError, getIsOffersLoading, getOffers } from '../../store/main-process/selectors';
+import { getAuthorizationStatus, getFavorites, getUserData, getUserError } from '../../store/user-process/selectors';
+import { useCallback, useEffect } from 'react';
 import { redirectToRoute } from '../../store/action';
+import { selectCity } from '../../store/main-process/main-process';
+import { AuthData } from '../../types/auth-data';
+import { getOfferError } from '../../store/offer-process/selectors';
+import { toast } from 'react-toastify';
 
 export function App() {
   const authorizationStatus = useSelector(getAuthorizationStatus);
@@ -26,6 +30,23 @@ export function App() {
   const offers = useAppSelector(getOffers);
   const isOffersLoading = useAppSelector(getIsOffersLoading);
   const favorites = useAppSelector(getFavorites);
+  const cities = useAppSelector(getCities);
+
+  const offerError = useAppSelector(getOfferError);
+  const userError = useAppSelector(getUserError);
+  const mainError = useAppSelector(getError);
+
+  useEffect(() => {
+    toast.warn(offerError);
+  }, [offerError]);
+
+  useEffect(() => {
+    toast.warn(userError);
+  }, [userError]);
+
+  useEffect(() => {
+    toast.warn(mainError);
+  }, [mainError]);
 
   const dispatch = useAppDispatch();
 
@@ -40,6 +61,15 @@ export function App() {
       dispatch(redirectToRoute(AppRoute.Login));
     }
   }, [authorized, dispatch]);
+
+  const handleNavigateToCity = (city: string) => {
+    dispatch(selectCity(city));
+    dispatch(redirectToRoute(AppRoute.Main));
+  };
+
+  const handleLoginClick = (data: AuthData) => {
+    dispatch(loginAction(data));
+  };
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return (<LoadingScreen />);
@@ -58,7 +88,11 @@ export function App() {
         <Route path={AppRoute.Login}
           element={
             <GuestRoute isGuest={isGuest}>
-              <LoginPage />
+              <LoginPage
+                cities={cities}
+                onNavigateToCity={handleNavigateToCity}
+                onLoginClick={handleLoginClick}
+              />
             </GuestRoute>
           }
         />
@@ -66,6 +100,7 @@ export function App() {
           element={
             <MainPage
               offers={offers}
+              cities={cities}
               isOffersLoading={isOffersLoading}
               onFavoriteStatusChanged={handleFavoriteClick}
             />

@@ -81,6 +81,9 @@ export const addReviewAction = createAsyncThunk<Review, ReviewAction, {
   'data/addReview',
   async ({ offerId: offerId, comment, rating }, { extra: api }) => {
     const route = APIRoute.OfferReviews.replace(':id', offerId);
+
+    await new Promise((res) => setTimeout(res, 5_000));
+
     const { data } = await api.post<Review>(route, { comment: comment, rating: rating });
 
     return data;
@@ -109,17 +112,14 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
-      saveToken(data.token);
+    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
+    saveToken(data.token);
 
-      dispatch(setUserData(data));
-      dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
-      dispatch(fetchFavoriteOffersAction());
-      dispatch(redirectToRoute(AppRoute.Main));
-    } catch (err) {
-      dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
-    }
+    dispatch(setUserData(data));
+    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Main));
+    dispatch(fetchOffersAction());
+    dispatch(fetchFavoriteOffersAction());
   },
 );
 

@@ -8,23 +8,24 @@ import { SortType } from '../../types/sort-type';
 import { Offer } from '../../types/offer';
 import { FavoriteAction } from '../../types/favorite-action';
 import { selectCity, selectSorting } from '../../store/main-process/main-process';
-import { getCities, getSelectedCity, getSelectedSortType } from '../../store/main-process/selectors';
+import { getSelectedCity, getSelectedSortType } from '../../store/main-process/selectors';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export type MainPageProps = {
   offers: Offer[];
+  cities: string[];
   isOffersLoading: boolean;
   onFavoriteStatusChanged: (action: FavoriteAction) => void;
 };
 
-export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: MainPageProps) {
+export function MainPage({ offers, cities, isOffersLoading, onFavoriteStatusChanged }: MainPageProps) {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
-  function onMouseEnter(id: string) {
+  function handleMouseEnter(id: string) {
     setActiveOfferId(id);
   }
 
-  function onMouseLeave(id: string) {
+  function handleMouseLeave(id: string) {
     if (activeOfferId === id) {
       setActiveOfferId(null);
     }
@@ -32,7 +33,6 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
 
   const choosenCity = useAppSelector(getSelectedCity);
   const choosenSortType = useAppSelector(getSelectedSortType);
-  const cities = useAppSelector(getCities);
 
   const dispatch = useAppDispatch();
 
@@ -89,8 +89,8 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
                   offers={activeOffers}
                   className={'cities__places-list places__list tabs__content'}
                   onFavoriteStatusChanged={onFavoriteStatusChanged}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 />
               </section>
               {

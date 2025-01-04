@@ -1,6 +1,5 @@
 import { ChangeEvent, SyntheticEvent } from 'react';
 import { ReviewAction } from '../../types/review-action';
-import { MIN_RATING, REVIEW_COMMENT_MAX_LENGTH, REVIEW_COMMENT_MIN_LENGTH } from '../../const';
 
 export type ReviewFormProps = {
   offerId: string;
@@ -13,7 +12,10 @@ export type ReviewFormProps = {
 }
 
 export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChanged, onRatingChanged, onFormSubmit }: ReviewFormProps) {
-  const isNotFilled = comment.length < REVIEW_COMMENT_MIN_LENGTH || rating < MIN_RATING;
+  const minCommentLength = 50;
+  const maxCommentLength = 300;
+  const minRating = 1;
+  const isNotFilled = comment.length < minCommentLength || rating < minRating;
 
   const handleCommentChanged = ({ target: { value } }: ChangeEvent<HTMLTextAreaElement>) => {
     onCommentChanged(value);
@@ -48,6 +50,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         <input
           className="form__rating-input visually-hidden"
           name="rating"
+          disabled={isDisabled}
           defaultValue={5}
           id="5-stars"
           type="radio"
@@ -64,6 +67,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         <input
           className="form__rating-input visually-hidden"
           name="rating"
+          disabled={isDisabled}
           defaultValue={4}
           id="4-stars"
           type="radio"
@@ -80,6 +84,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         <input
           className="form__rating-input visually-hidden"
           name="rating"
+          disabled={isDisabled}
           defaultValue={3}
           id="3-stars"
           type="radio"
@@ -96,6 +101,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         <input
           className="form__rating-input visually-hidden"
           name="rating"
+          disabled={isDisabled}
           defaultValue={2}
           id="2-stars"
           type="radio"
@@ -112,6 +118,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         <input
           className="form__rating-input visually-hidden"
           name="rating"
+          disabled={isDisabled}
           defaultValue={1}
           id="1-star"
           type="radio"
@@ -127,7 +134,7 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
         </label>
       </div>
       <textarea
-        maxLength={REVIEW_COMMENT_MAX_LENGTH}
+        maxLength={maxCommentLength}
         className="reviews__textarea form__textarea"
         id="review"
         name="review"

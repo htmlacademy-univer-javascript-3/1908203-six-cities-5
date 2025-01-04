@@ -4,10 +4,10 @@ import { AuthData } from '../../types/auth-data';
 export type LoginFormProps = {
   onFormSubmit: (data: AuthData) => void;
   onInvalidPassword: () => void;
-  onEmailRequired: () => void;
+  onLoginRequired: () => void;
 };
 
-export function LoginForm({ onFormSubmit, onInvalidPassword, onEmailRequired }: LoginFormProps) {
+export function LoginForm({ onFormSubmit, onInvalidPassword, onLoginRequired }: LoginFormProps) {
   const [authData, setAuthData] = useState<AuthData>({
     login: '',
     password: '',
@@ -31,7 +31,7 @@ export function LoginForm({ onFormSubmit, onInvalidPassword, onEmailRequired }: 
     event.preventDefault();
 
     if (authData.login === '') {
-      onEmailRequired();
+      onLoginRequired();
       return;
     }
 

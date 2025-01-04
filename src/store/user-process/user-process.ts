@@ -8,6 +8,7 @@ const initialState: UserState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userData: undefined,
   favoriteOffers: undefined,
+  error: undefined,
 };
 
 export const userProcess = createSlice({
@@ -23,6 +24,30 @@ export const userProcess = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(loginAction.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(logoutAction.pending, (state) => {
+        state.error = undefined;
+      })
+      .addCase(checkAuthAction.rejected, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+      })
+      .addCase(loginAction.rejected, (state, { error }) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.error = error.message;
+      })
+      .addCase(logoutAction.rejected, (state, { error }) => {
+        state.error = error.message;
+      })
+      .addCase(loginAction.fulfilled, (state) => {
+        state.authorizationStatus = AuthorizationStatus.Auth;
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.userData = undefined;
+        state.favoriteOffers = undefined;
+      })
       .addCase(changeFavoriteStatusAction.fulfilled, (state, { payload }) => {
         state.favoriteOffers = state.favoriteOffers?.filter((offer) => offer.id !== payload.id);
 
@@ -36,20 +61,6 @@ export const userProcess = createSlice({
       .addCase(checkAuthAction.fulfilled, (state, action) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.userData = action.payload;
-      })
-      .addCase(checkAuthAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-      })
-      .addCase(loginAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.Auth;
-      })
-      .addCase(loginAction.rejected, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-      })
-      .addCase(logoutAction.fulfilled, (state) => {
-        state.authorizationStatus = AuthorizationStatus.NoAuth;
-        state.userData = undefined;
-        state.favoriteOffers = undefined;
       });
   }
 });
