@@ -68,7 +68,8 @@ export function OfferPage({ canWriteComments, onFavoriteStatusChanged }: OfferPa
     dispatch(updateRating(value));
   };
 
-  const maxAdultString = `Max ${offer.maxAdults} ${offer.maxAdults % 10 === 1 ? 'adult' : 'adults'}`;
+  const maxAdults = offer.maxAdults;
+  const maxAdultString = `Max ${maxAdults} ${maxAdults % 10 === 1 ? 'adult' : 'adults'}`;
 
   return (
     <main className="page__main page__main--offer">

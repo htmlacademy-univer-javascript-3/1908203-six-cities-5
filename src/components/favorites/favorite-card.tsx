@@ -14,6 +14,8 @@ export function FavoriteCard({ offer, onFavoriteStatusChanged }: FavoriteCardPro
 
   const link = AppRoute.Offer.replace(':id', offer.id);
 
+  const offerTypeString = offer.type.charAt(0).toUpperCase() + offer.type.slice(1);
+
   return (
     <article className="favorites__card place-card">
       <div className="favorites__image-wrapper place-card__image-wrapper">
@@ -48,7 +50,7 @@ export function FavoriteCard({ offer, onFavoriteStatusChanged }: FavoriteCardPro
         <h2 className="place-card__name">
           <Link to={link}>{offer.title}</Link>
         </h2>
-        <p className="place-card__type">{offer.type}</p>
+        <p className="place-card__type">{offerTypeString}</p>
       </div>
     </article>
   );

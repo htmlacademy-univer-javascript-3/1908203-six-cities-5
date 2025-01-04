@@ -62,9 +62,8 @@ export function App() {
     }
   }, [authorized, dispatch]);
 
-  const handleNavigateToCity = (city: string) => {
+  const handleSelectCity = (city: string) => {
     dispatch(selectCity(city));
-    dispatch(redirectToRoute(AppRoute.Main));
   };
 
   const handleLoginClick = (data: AuthData) => {
@@ -90,7 +89,7 @@ export function App() {
             <GuestRoute isGuest={isGuest}>
               <LoginPage
                 cities={cities}
-                onNavigateToCity={handleNavigateToCity}
+                onSelectCity={handleSelectCity}
                 onLoginClick={handleLoginClick}
               />
             </GuestRoute>
