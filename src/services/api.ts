@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
+import { toast } from 'react-toastify';
 
 export const BASE_URL = 'https://14.design.htmlacademy.pro/six-cities';
 export const REQUEST_TIMEOUT = 5000;
@@ -41,10 +42,9 @@ export const createAPI = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = error.response.data;
+        const detailMessage = (error.response.data);
 
-        // eslint-disable-next-line no-console
-        console.log(detailMessage);
+        toast.warn(detailMessage.message);
       }
 
       throw error;

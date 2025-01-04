@@ -1,6 +1,6 @@
 import { FavoriteAction } from '../../types/favorite-action';
 import { Offer } from '../../types/offer';
-import { OfferItem } from '../offer-item/offer-item';
+import { MemoizedOfferItem } from './offer-item';
 
 export type OfferListProps = {
   offers: Offer[];
@@ -16,7 +16,7 @@ export function OfferList({ offers, className, onFavoriteStatusChanged, onMouseE
       {
         offers
           .map((offer) => (
-            <OfferItem
+            <MemoizedOfferItem
               key={offer.id}
               offer={offer}
               onFavoriteStatusChanged={onFavoriteStatusChanged}

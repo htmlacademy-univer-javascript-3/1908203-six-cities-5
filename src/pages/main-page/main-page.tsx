@@ -40,7 +40,7 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
     return (<LoadingScreen />);
   }
 
-  const choosenOffers = offers
+  const activeOffers = offers
     .filter((offer) => offer.city.name === choosenCity)
     .sort(
       (left, right) => {
@@ -56,6 +56,8 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
       }
     );
 
+  const isEmpty = activeOffers.length <= 0;
+
   const handleCityChoose = (city: string) => {
     dispatch(selectCity(city));
   };
@@ -65,7 +67,7 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
   };
 
   return (
-    <main className='page__main page__main--index'>
+    <main className={`page__main page__main--index ${isEmpty && 'page__main--index-empty'}`}>
       <h1 className="visually-hidden">Cities</h1>
       <CityHeader
         city={choosenCity}
@@ -74,17 +76,17 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
       />
       <div className="cities">
         {
-          offers.length > 0 ?
+          !isEmpty ?
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{choosenOffers.length} places to stay in {choosenCity}</b>
+                <b className="places__found">{activeOffers.length} places to stay in {choosenCity}</b>
                 <SortOptions
                   sortType={choosenSortType}
                   onSortingChoose={handleSortingChoose}
                 />
                 <OfferList
-                  offers={choosenOffers}
+                  offers={activeOffers}
                   className={'cities__places-list places__list tabs__content'}
                   onFavoriteStatusChanged={onFavoriteStatusChanged}
                   onMouseEnter={onMouseEnter}
@@ -92,27 +94,25 @@ export function MainPage({ offers, isOffersLoading, onFavoriteStatusChanged }: M
                 />
               </section>
               {
-                choosenOffers.length > 0 &&
+                !isEmpty &&
                 <div className="cities__right-section">
                   <Map
-                    city={choosenOffers[0].city}
-                    offers={choosenOffers}
+                    city={activeOffers[0].city}
+                    offers={activeOffers}
                     activeOfferId={activeOfferId}
                     className="cities__map map"
                   />
                 </div>
               }
             </div> :
-            <div className="cities">
-              <div className="cities__places-container cities__places-container--empty container">
-                <section className="cities__no-places">
-                  <div className="cities__status-wrapper tabs__content">
-                    <b className="cities__status">No places to stay available</b>
-                    <p className="cities__status-description">We could not find any property available at the moment in {choosenCity}</p>
-                  </div>
-                </section>
-                <div className="cities__right-section"></div>
-              </div>
+            <div className="cities__places-container cities__places-container--empty container">
+              <section className="cities__no-places">
+                <div className="cities__status-wrapper tabs__content">
+                  <b className="cities__status">No places to stay available</b>
+                  <p className="cities__status-description">We could not find any property available at the moment in {choosenCity}</p>
+                </div>
+              </section>
+              <div className="cities__right-section"></div>
             </div>
         }
       </div>

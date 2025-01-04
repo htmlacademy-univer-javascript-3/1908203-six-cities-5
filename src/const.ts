@@ -22,6 +22,12 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const ReviewCommentMaxLength = 300;
-export const ReviewCommentMinLength = 50;
-export const MinRating = 1;
+export enum NameSpace {
+  User = 'USER',
+  Offer = 'OFFER',
+  Main = 'MAIN'
+}
+
+export const REVIEW_COMMENT_MAX_LENGTH = 300;
+export const REVIEW_COMMENT_MIN_LENGTH = 50;
+export const MIN_RATING = 1;
