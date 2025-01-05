@@ -51,7 +51,8 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
           className="form__rating-input visually-hidden"
           name="rating"
           disabled={isDisabled}
-          defaultValue={5}
+          checked={rating === 5}
+          value={5}
           id="5-stars"
           type="radio"
         />
@@ -68,7 +69,8 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
           className="form__rating-input visually-hidden"
           name="rating"
           disabled={isDisabled}
-          defaultValue={4}
+          checked={rating === 4}
+          value={4}
           id="4-stars"
           type="radio"
         />
@@ -85,7 +87,8 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
           className="form__rating-input visually-hidden"
           name="rating"
           disabled={isDisabled}
-          defaultValue={3}
+          checked={rating === 3}
+          value={3}
           id="3-stars"
           type="radio"
         />
@@ -102,7 +105,8 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
           className="form__rating-input visually-hidden"
           name="rating"
           disabled={isDisabled}
-          defaultValue={2}
+          checked={rating === 2}
+          value={2}
           id="2-stars"
           type="radio"
         />
@@ -119,7 +123,8 @@ export function ReviewForm({ offerId, comment, rating, isDisabled, onCommentChan
           className="form__rating-input visually-hidden"
           name="rating"
           disabled={isDisabled}
-          defaultValue={1}
+          checked={rating === 1}
+          value={1}
           id="1-star"
           type="radio"
         />
