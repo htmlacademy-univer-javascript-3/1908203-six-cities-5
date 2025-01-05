@@ -51,6 +51,7 @@ export const offerProcess = createSlice({
       .addCase(addReviewAction.fulfilled, (state, { payload }) => {
         state.isReviewFormSending = false;
         state.comment = '';
+        state.rating = 0;
 
         if (state.selectedOffer !== undefined) {
           state.selectedOffer.reviews.unshift(payload);
