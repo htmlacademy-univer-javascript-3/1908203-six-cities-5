@@ -81,9 +81,6 @@ export const addReviewAction = createAsyncThunk<Review, ReviewAction, {
   'data/addReview',
   async ({ offerId: offerId, comment, rating }, { extra: api }) => {
     const route = APIRoute.OfferReviews.replace(':id', offerId);
-
-    await new Promise((res) => setTimeout(res, 5_000));
-
     const { data } = await api.post<Review>(route, { comment: comment, rating: rating });
 
     return data;
